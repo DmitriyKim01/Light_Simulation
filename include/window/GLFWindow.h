@@ -14,15 +14,30 @@ private:
 	int m_width;
 	int m_height;
 
-	float m_deltaTime = 0.0f;
-	float m_lastFrame = 0.0f;
+	double m_deltaTime = 0.0f;
+	double m_lastFrame = 0.0f;
 
 	std::string m_title;
+
+	GLFWwindow* m_window = nullptr;
+	Camera* m_camera = nullptr;
 	
+	float m_lastX;
+	float m_lastY;
+	bool m_firstMouse = true;
+
+private:
 	void init();
+
 	void setGLFWHints();
 	static int validateDimension(int value, const std::string& name);
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+	void handleMouseMove(double xposIn, double yposIn);
+	void handleScroll(double xoffset, double yoffset);
+
+	static void mouseCallback(GLFWwindow* window, double xpos, double ypos);
+	static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
 public:
 	struct Defaults {
@@ -43,7 +58,7 @@ public:
 	void update() 		override;
 	bool shouldClose()	override;
 	void shutdown() 	override;
-	void processInput(Camera& camera) override;
+	void processInput() override;
 
 	void lockCursor() override;
 	void unlockCursor() override;
@@ -52,5 +67,7 @@ public:
 
 	int getWidth()	const override;
 	int getHeight() const override;
+
+	void setCamera(Camera& camera) override;
 
 };

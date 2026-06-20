@@ -120,7 +120,7 @@ void GLFWindow::framebuffer_size_callback(GLFWwindow* window, int width, int hei
 
 void::GLFWindow::update()
 {
-	float currentFrame = glfwGetTime();
+	double currentFrame = glfwGetTime();
 	m_deltaTime = currentFrame - m_lastFrame;
 	m_lastFrame = currentFrame;
 
@@ -128,20 +128,20 @@ void::GLFWindow::update()
 	pollEvents();
 }
 
-void GLFWindow::processInput(Camera& camera)
+void GLFWindow::processInput()
 {
 
 	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(m_window, true);
 
 	if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(FORWARD, m_deltaTime);
+		m_camera->processKeyboard(FORWARD, (float) m_deltaTime);
 	if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, m_deltaTime);
+		m_camera->processKeyboard(BACKWARD, (float) m_deltaTime);
 	if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, m_deltaTime);
+		m_camera->processKeyboard(LEFT, (float) m_deltaTime);
 	if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, m_deltaTime);
+		m_camera->processKeyboard(RIGHT, (float) m_deltaTime);
 }
 
 void GLFWindow::lockCursor()
@@ -158,5 +158,66 @@ void GLFWindow::setBackgroundColor(const Color& color)
 {
 	glClearColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 	glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void GLFWindow::setCamera(Camera& camera)
+{
+	m_camera = &camera;
+}
+
+void GLFWindow::mouseCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	auto* self = static_cast<GLFWindow*>(glfwGetWindowUserPointer(window));
+
+	if (self)
+	{
+		self->handleMouseMove(xpos, ypos);
+	}
+}
+
+void GLFWindow::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	auto* self = static_cast<GLFWindow*>(glfwGetWindowUserPointer(window));
+
+	if (self)
+	{
+		self->handleScroll(xoffset, yoffset);
+	}
+}
+
+void GLFWindow::handleMouseMove(double xposIn, double yposIn)
+{
+	if (!m_camera)
+	{
+		return;
+	}
+
+	float xpos = static_cast<float>(xposIn);
+	float ypos = static_cast<float>(yposIn);
+
+	if (m_firstMouse)
+	{
+		m_lastX = xpos;
+		m_lastY = ypos;
+		m_firstMouse = false;
+	}
+
+	float xoffset = xpos - m_lastX;
+	float yoffset = m_lastY - ypos;
+
+	m_lastX = xpos;
+	m_lastY = ypos;
+
+	m_camera->processMouseMovement(xoffset, yoffset);
+}
+
+void GLFWindow::handleScroll(double xoffset, double yoffset)
+{
+	if (!m_camera)
+	{
+		return;
+	}
+
+	m_camera->processMouseScroll(static_cast<float>(yoffset));
 }
 
