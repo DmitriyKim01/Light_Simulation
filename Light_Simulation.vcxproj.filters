@@ -1326,7 +1326,7 @@
     <ClInclude Include="externals\includes\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\camera\Camera.h">
+    <ClInclude Include="include\camera\OpenGLCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\shader\OpenGLShader.h">
@@ -1339,6 +1339,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\core\Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1362,6 +1365,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera\OpenGLCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -81,6 +81,11 @@ void GLFWindow::init()
 	// Keep stored dimensions in sync if GLFW adjusted them
 	glfwGetFramebufferSize(m_window, &m_width, &m_height);
 	glViewport(0, 0, m_width, m_height);
+
+	glfwSetWindowUserPointer(m_window, this);
+
+	glfwSetCursorPosCallback(m_window, GLFWindow::mouseCallback);
+	glfwSetScrollCallback(m_window, GLFWindow::scrollCallback);
 }
 
 void GLFWindow::pollEvents()
@@ -118,7 +123,7 @@ void GLFWindow::framebuffer_size_callback(GLFWwindow* window, int width, int hei
 	glViewport(0, 0, width, height);
 }
 
-void::GLFWindow::update()
+void GLFWindow::update()
 {
 	double currentFrame = glfwGetTime();
 	m_deltaTime = currentFrame - m_lastFrame;
@@ -135,13 +140,13 @@ void GLFWindow::processInput()
 		glfwSetWindowShouldClose(m_window, true);
 
 	if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-		m_camera->processKeyboard(FORWARD, (float) m_deltaTime);
+		m_camera->processKeyboard(Camera::Movement::FORWARD, (float) m_deltaTime);
 	if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-		m_camera->processKeyboard(BACKWARD, (float) m_deltaTime);
+		m_camera->processKeyboard(Camera::Movement::BACKWARD, (float) m_deltaTime);
 	if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-		m_camera->processKeyboard(LEFT, (float) m_deltaTime);
+		m_camera->processKeyboard(Camera::Movement::LEFT, (float) m_deltaTime);
 	if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-		m_camera->processKeyboard(RIGHT, (float) m_deltaTime);
+		m_camera->processKeyboard(Camera::Movement::RIGHT, (float) m_deltaTime);
 }
 
 void GLFWindow::lockCursor()
