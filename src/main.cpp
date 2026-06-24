@@ -109,6 +109,7 @@ int main() {
         shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
         shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		shader.setVec3("lightPos", lightPos);
+		shader.setVec3("viewPos", camera->getPosition());
 
         // View
         glm::mat4 view = camera->getViewMatrix();
