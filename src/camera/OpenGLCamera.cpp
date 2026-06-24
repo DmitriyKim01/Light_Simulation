@@ -130,3 +130,8 @@ float OpenGLCamera::getZoom() const
 {
 	return Zoom;
 }
+
+glm::vec3 OpenGLCamera::getPosition() const
+{
+	return Position;
+}

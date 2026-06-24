@@ -81,9 +81,9 @@ void GLFWindow::init()
 	// Keep stored dimensions in sync if GLFW adjusted them
 	glfwGetFramebufferSize(m_window, &m_width, &m_height);
 	glViewport(0, 0, m_width, m_height);
+	glEnable(GL_DEPTH_TEST);
 
 	glfwSetWindowUserPointer(m_window, this);
-
 	glfwSetCursorPosCallback(m_window, GLFWindow::mouseCallback);
 	glfwSetScrollCallback(m_window, GLFWindow::scrollCallback);
 }
