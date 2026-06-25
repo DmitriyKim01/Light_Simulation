@@ -16,8 +16,7 @@
 const int SCR_WIDTH = 1920;
 const int SCR_HEIGHT = 1080;
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-
-
+glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 int main() {
 	Camera* camera = new OpenGLCamera(
@@ -108,10 +107,18 @@ int main() {
         glClear(GL_DEPTH_BUFFER_BIT);
 
         shader.use();
-        shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-		shader.setVec3("lightPos", lightPos);
+        shader.setVec3("lightColor", lightColor);
 		shader.setVec3("viewPos", camera->getPosition());
+
+        shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        shader.setFloat("material.shininess", 32.0f);
+
+        shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+        shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+        shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        shader.setVec3("light.position", lightPos);
 
         // View
         glm::mat4 view = camera->getViewMatrix();
@@ -131,6 +138,8 @@ int main() {
         lightShader.use();
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
+        lightShader.setVec3("lightColor", lightColor);
+
         model = glm::mat4(1.0f);
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f));
