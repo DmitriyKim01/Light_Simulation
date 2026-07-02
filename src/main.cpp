@@ -1,5 +1,5 @@
 #include <core/Color.h>
-
+#include <shapes/Box.h>
 #include <window/Window.h>
 #include <window/GLFWindow.h>
 #include <camera/Camera.h>
@@ -12,6 +12,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <stb/stb_image.h>
 
 const int SCR_WIDTH = 1920;
 const int SCR_HEIGHT = 1080;
@@ -29,6 +31,22 @@ int main() {
 
 	OpenGLShader shader("shaders/base.vert", "shaders/base.frag");
 	OpenGLShader lightShader("shaders/light.vert", "shaders/light.frag");
+
+	Box box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, Color::White);
+    box.enableNormals();
+
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("textures/knight.jpg", &width, &height, &nrChannels, 0);
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    stbi_image_free(data);
+
+    
 
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -77,7 +95,7 @@ int main() {
     unsigned int VBO;
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, box.getVertices().size() * sizeof(float), box.getVertices().data(), GL_STATIC_DRAW);
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -151,7 +169,7 @@ int main() {
         lightShader.setMat4("model", model);
 
         glBindVertexArray(lightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());
 
 		window->update();
 	}
