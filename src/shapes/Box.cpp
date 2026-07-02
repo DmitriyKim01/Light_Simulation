@@ -16,21 +16,6 @@ Box::Box(int x, int y, int z, int width, int height, int depth, Color color)
 		  static_cast<float>(width), static_cast<float>(height), static_cast<float>(depth), color)
 {}
 
-Box::Box(float x, float y, float z, float width, float height, float depth, Color color, bool hasNormals)
-	: m_position(x, y, z), m_color(color)
-{
-	setWidth(width);
-	setHeight(height);
-	setDepth(depth);
-	m_hasNormals = hasNormals;
-	buildVerticesWithNormals();
-}
-
-Box::Box(int x, int y, int z, int width, int height, int depth, Color color, bool hasNormals)
-	: Box(static_cast<float>(x), static_cast<float>(y), static_cast<float>(z),
-		  static_cast<float>(width), static_cast<float>(height), static_cast<float>(depth), color, hasNormals)
-{}
-
 float Box::getWidth() const
 {
 	return m_width;
@@ -93,11 +78,6 @@ void Box::setPosition(const glm::vec3& position)
 	buildVertices();
 }
 
-float Box::getVolume() const
-{
-	return m_width * m_height * m_depth;
-}
-
 Color Box::getColor() const
 {
 	return m_color;
@@ -107,6 +87,62 @@ void Box::setColor(const Color& color)
 {
 	m_color = color;
 	buildVertices();
+}
+
+void Box::includeColor()
+{
+	m_attributes |= static_cast<unsigned int>(VertexAttribute::Color);
+	buildVertices();
+}
+
+void Box::excludeColor()
+{
+	m_attributes &= ~static_cast<unsigned int>(VertexAttribute::Color);
+	buildVertices();
+}
+
+void Box::includeTexture()
+{
+	m_attributes |= static_cast<unsigned int>(VertexAttribute::TexCoord);
+	buildVertices();
+}
+
+void Box::excludeTexture()
+{
+	m_attributes &= ~static_cast<unsigned int>(VertexAttribute::TexCoord);
+	buildVertices();
+}
+
+void Box::includeNormals()
+{
+	m_attributes |= static_cast<unsigned int>(VertexAttribute::Normal);
+	buildVertices();
+}
+
+void Box::excludeNormals()
+{
+	m_attributes &= ~static_cast<unsigned int>(VertexAttribute::Normal);
+	buildVertices();
+}
+
+bool Box::hasAttribute(VertexAttribute attribute) const
+{
+	return (m_attributes & static_cast<unsigned int>(attribute)) != 0;
+}
+
+bool Box::hasColor() const
+{
+	return hasAttribute(VertexAttribute::Color);
+}
+
+bool Box::hasTexture() const
+{
+	return hasAttribute(VertexAttribute::TexCoord);
+}
+
+bool Box::hasNormals() const
+{
+	return hasAttribute(VertexAttribute::Normal);
 }
 
 const std::vector<float>& Box::getVertices() const
@@ -119,16 +155,9 @@ int Box::getVertexCount() const
 	return static_cast<int>(m_vertices.size() / 6);
 }
 
-void Box::enableNormals()
+std::size_t Box::getPositionOffsetBytes() const
 {
-	m_hasNormals = true;
-	buildVerticesWithNormals();
-}
-
-void Box::disableNormals()
-{
-	m_hasNormals = false;
-	buildVertices();
+	return 0;
 }
 
 void Box::addVertex(float x, float y, float z)
@@ -154,6 +183,8 @@ void Box::addVertex(float x, float y, float z, glm::vec3 normal)
 	//m_vertices.push_back(m_color.getRed());
 	//m_vertices.push_back(m_color.getGreen());
 	//m_vertices.push_back(m_color.getBlue());
+	// Texture
+	
 	// Normal
 	m_vertices.push_back(normal.x);
 	m_vertices.push_back(normal.y);
@@ -308,5 +339,25 @@ void Box::buildVerticesWithNormals()
 	addVertex(left, top, back, normalTop);
 }
 
+void Box::calculateStride()
+{
+	m_strideFloats = 3; // position: x, y, z
+
+	if (hasColor())
+	{
+		m_strideFloats += 3; // r, g, b
+	}
+
+	if (hasTexture())
+	{
+		m_strideFloats += 2; // u, v
+	}
+
+	if (hasNormals())
+	{
+		m_strideFloats += 3; // nx, ny, nz
+	}
+
+}
 
 
