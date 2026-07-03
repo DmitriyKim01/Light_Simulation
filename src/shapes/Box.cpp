@@ -220,6 +220,11 @@ Color Box::getColor() const
 	return m_color;
 }
 
+glm::vec3 Box::getColorVec3() const
+{
+	return glm::vec3(m_color.getRed(), m_color.getGreen(), m_color.getBlue());
+}
+
 void Box::setColor(const Color& color)
 {
 	m_color = color;

@@ -598,6 +598,8 @@
     <ClInclude Include="externals\includes\glm\vec4.hpp" />
     <ClInclude Include="externals\includes\glm\vector_relational.hpp" />
     <ClInclude Include="externals\includes\KHR\khrplatform.h" />
+    <ClInclude Include="include\buffers\VertexArray.h" />
+    <ClInclude Include="include\buffers\VertexBuffer.h" />
     <ClInclude Include="include\camera\Camera.h" />
     <ClInclude Include="include\camera\OpenGLCamera.h" />
     <ClInclude Include="include\core\Color.h" />
@@ -611,6 +613,8 @@
     <ClCompile Include="externals\includes\glm\detail\glm.cpp" />
     <ClCompile Include="externals\includes\glm\glm.cppm" />
     <ClCompile Include="externals\libs\stb_image.cpp" />
+    <ClCompile Include="src\buffers\VertexArray.cpp" />
+    <ClCompile Include="src\buffers\VertexBuffer.cpp" />
     <ClCompile Include="src\camera\OpenGLCamera.cpp" />
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\glad.c" />

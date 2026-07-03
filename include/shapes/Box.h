@@ -59,6 +59,7 @@ public:
 	void setPosition(const glm::vec3& position);
 
 	Color getColor() const;
+	glm::vec3 getColorVec3() const;
 	void setColor(const Color& color);
 
 	void includeColor();
