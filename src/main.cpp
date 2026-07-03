@@ -33,7 +33,7 @@ int main() {
 	OpenGLShader lightShader("shaders/light.vert", "shaders/light.frag");
 
 	Box box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, Color::White);
-    box.enableNormals();
+    box.includeNormal();
 
     int width, height, nrChannels;
     unsigned char* data = stbi_load("textures/knight.jpg", &width, &height, &nrChannels, 0);
@@ -101,20 +101,39 @@ int main() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
+    GLsizei stride = static_cast<GLsizei>(box.getStrideBytes());
+
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(box.getPositionOffsetBytes()));
     glEnableVertexAttribArray(0);
 
 	// normal attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+    if (box.hasNormal())
+    {
+        glVertexAttribPointer(
+            1,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            stride,
+            reinterpret_cast<void*>(box.getNormalOffsetBytes())
+        );
+        glEnableVertexAttribArray(1);
+    }
 
     unsigned int lightVAO;
 	glGenVertexArrays(1, &lightVAO);
     glBindVertexArray(lightVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(
+        0,
+        3,
+        GL_FLOAT,
+        GL_FALSE,
+        static_cast<GLsizei>(box.getStrideBytes()),
+        reinterpret_cast<void*>(box.getPositionOffsetBytes())
+    );
     glEnableVertexAttribArray(0);
 
 	while (!window->shouldClose())
@@ -151,7 +170,7 @@ int main() {
         shader.setMat4("model", model);
 
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());
 
         lightShader.use();
         lightShader.setMat4("projection", projection);
