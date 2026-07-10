@@ -6,6 +6,7 @@
 #include <camera/OpenGLCamera.h>
 #include <buffers/VertexBuffer.h>
 #include <buffers/VertexArray.h>
+#include <texture/OpenGLTexture.h>
 
 #include <shader/OpenGLShader.h>
 
@@ -16,6 +17,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <stb/stb_image.h>
+#include <iostream>
 
 const int SCR_WIDTH = 1920;
 const int SCR_HEIGHT = 1080;
@@ -35,20 +37,12 @@ int main() {
 	OpenGLShader lightShader("shaders/light.vert", "shaders/light.frag");
 
 	Box box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, Color::White);
+    box.includeTextureCoordinates();
     box.includeNormal();
 
 	Box lightBox(1.2f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, Color::White);
 
-    //int width, height, nrChannels;
-    //unsigned char* data = stbi_load("textures/knight.jpg", &width, &height, &nrChannels, 0);
-    //unsigned int texture;
-    //glGenTextures(1, &texture);
-    //glBindTexture(GL_TEXTURE_2D, texture);
-
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    //glGenerateMipmap(GL_TEXTURE_2D);
-
-    //stbi_image_free(data);
+    OpenGLTexture openGLTexture("textures/container.jpg");
 
     VertexBuffer VBO;
     VBO.bind();
@@ -104,7 +98,7 @@ int main() {
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
         shader.setMat4("model", model);
-
+        openGLTexture.bind();
         VAO.bind();
         glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());
 

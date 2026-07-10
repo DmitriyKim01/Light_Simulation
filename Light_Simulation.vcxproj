@@ -605,7 +605,7 @@
     <ClInclude Include="include\core\Color.h" />
     <ClInclude Include="include\shader\OpenGLShader.h" />
     <ClInclude Include="include\shapes\Box.h" />
-    <ClInclude Include="include\texture\TextureLoader.h" />
+    <ClInclude Include="include\texture\OpenGLTexture.h" />
     <ClInclude Include="include\window\GLFWindow.h" />
     <ClInclude Include="include\window\Window.h" />
   </ItemGroup>
@@ -621,6 +621,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\shader\OpenGLShader.cpp" />
     <ClCompile Include="src\shapes\Box.cpp" />
+    <ClCompile Include="src\texture\TextureLoader.cpp" />
     <ClCompile Include="src\window\GLFWindow.cpp" />
   </ItemGroup>
   <ItemGroup>

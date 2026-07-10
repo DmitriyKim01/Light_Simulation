@@ -1346,7 +1346,7 @@
     <ClInclude Include="include\camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\texture\TextureLoader.h">
+    <ClInclude Include="include\texture\OpenGLTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\shapes\Box.h">
@@ -1394,6 +1394,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\buffers\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
