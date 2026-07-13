@@ -98,6 +98,7 @@ int main() {
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
         shader.setMat4("model", model);
+
         openGLTexture.bind();
         VAO.bind();
         glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());

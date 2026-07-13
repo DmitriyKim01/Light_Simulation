@@ -13,7 +13,7 @@ public:
 	};
 
 	virtual ~Camera() = default;
-	
+
 	virtual glm::mat4 getViewMatrix() const = 0;
 	virtual void processKeyboard(Movement direction, float deltaTime) = 0;
 	virtual void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true) = 0;
