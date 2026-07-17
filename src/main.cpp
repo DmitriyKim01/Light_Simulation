@@ -44,6 +44,7 @@ int main() {
 
     OpenGLTexture openGLTexture("textures/container2.png");
 	OpenGLTexture diffuseMap("textures/container2.png");
+	OpenGLTexture specularMap("textures/container2_specular.png");
 
     VertexBuffer VBO;
     VBO.bind();
@@ -67,6 +68,10 @@ int main() {
     lightVBO.unbind();
     lightVAO.unbind();
 
+    shader.use();
+    shader.setInt("material.diffuse", 0);
+    shader.setInt("material.specular", 1);
+
 	while (!window->shouldClose())
 	{
 		window->processInput();
@@ -80,8 +85,7 @@ int main() {
 
         //shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
         //shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
-        shader.setInt("material.diffuse", 0);
-        shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        //shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
         shader.setFloat("material.shininess", 64.0f);
 
         shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
@@ -103,6 +107,9 @@ int main() {
 
         glActiveTexture(GL_TEXTURE0);
         openGLTexture.bind();
+        glActiveTexture(GL_TEXTURE1);
+		specularMap.bind();
+
         VAO.bind();
         glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());
 
