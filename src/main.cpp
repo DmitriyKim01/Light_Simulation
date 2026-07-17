@@ -4,6 +4,9 @@
 #include <window/GLFWindow.h>
 #include <camera/Camera.h>
 #include <camera/OpenGLCamera.h>
+#include <buffers/VertexBuffer.h>
+#include <buffers/VertexArray.h>
+#include <texture/OpenGLTexture.h>
 
 #include <shader/OpenGLShader.h>
 
@@ -14,17 +17,18 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <stb/stb_image.h>
+#include <iostream>
 
 const int SCR_WIDTH = 1920;
 const int SCR_HEIGHT = 1080;
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 int main() {
+
 	Camera* camera = new OpenGLCamera(
 		glm::vec3(0.0f, 0.0f, 3.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	);
+
 	Window* window = new GLFWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Window");
     window->setCamera(*camera);
 	window->lockCursor();
@@ -33,89 +37,35 @@ int main() {
 	OpenGLShader lightShader("shaders/light.vert", "shaders/light.frag");
 
 	Box box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, Color::White);
-    box.enableNormals();
+    box.includeTextureCoordinates();
+    box.includeNormal();
 
-    int width, height, nrChannels;
-    unsigned char* data = stbi_load("textures/knight.jpg", &width, &height, &nrChannels, 0);
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+	Box lightBox(1.2f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, Color::White);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    OpenGLTexture openGLTexture("textures/container2.png");
+	OpenGLTexture diffuseMap("textures/container2.png");
 
-    stbi_image_free(data);
+    VertexBuffer VBO;
+    VBO.bind();
+    VBO.setData(box.getVertices());
 
-    
+    VertexArray VAO;
+    VAO.bind();
+    VAO.setLayout(box);
 
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+    VBO.unbind();
+    VAO.unbind();
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+    VertexBuffer lightVBO;
+    lightVBO.bind();
+    lightVBO.setData(lightBox.getVertices());
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+    VertexArray lightVAO;
+    lightVAO.bind();
+    lightVAO.setLayout(lightBox);
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-    };
-
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, box.getVertices().size() * sizeof(float), box.getVertices().data(), GL_STATIC_DRAW);
-
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-	// normal attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-    unsigned int lightVAO;
-	glGenVertexArrays(1, &lightVAO);
-    glBindVertexArray(lightVAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    lightVBO.unbind();
+    lightVAO.unbind();
 
 	while (!window->shouldClose())
 	{
@@ -125,18 +75,19 @@ int main() {
         glClear(GL_DEPTH_BUFFER_BIT);
 
         shader.use();
-        shader.setVec3("lightColor", lightColor);
+        shader.setVec3("lightColor", lightBox.getColorVec3());
 		shader.setVec3("viewPos", camera->getPosition());
 
-        shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
-        shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        //shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        //shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        shader.setInt("material.diffuse", 0);
         shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        shader.setFloat("material.shininess", 32.0f);
+        shader.setFloat("material.shininess", 64.0f);
 
         shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
         shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-        shader.setVec3("light.position", lightPos);
+        shader.setVec3("light.position", lightBox.getPosition());
 
         // View
         glm::mat4 view = camera->getViewMatrix();
@@ -150,26 +101,23 @@ int main() {
         glm::mat4 model = glm::mat4(1.0f);
         shader.setMat4("model", model);
 
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glActiveTexture(GL_TEXTURE0);
+        openGLTexture.bind();
+        VAO.bind();
+        glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());
 
         lightShader.use();
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
-        lightShader.setVec3("lightColor", lightColor);
+        lightShader.setVec3("lightColor", lightBox.getColorVec3());
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f));
-        lightShader.setMat4("model", model);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
+        model = glm::translate(model, lightBox.getPosition());
         model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
         lightShader.setMat4("model", model);
 
-        glBindVertexArray(lightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, box.getVertexCount());
+        lightVAO.bind();
+        glDrawArrays(GL_TRIANGLES, 0, lightBox.getVertexCount());
 
 		window->update();
 	}

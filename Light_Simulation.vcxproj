@@ -598,12 +598,14 @@
     <ClInclude Include="externals\includes\glm\vec4.hpp" />
     <ClInclude Include="externals\includes\glm\vector_relational.hpp" />
     <ClInclude Include="externals\includes\KHR\khrplatform.h" />
+    <ClInclude Include="include\buffers\VertexArray.h" />
+    <ClInclude Include="include\buffers\VertexBuffer.h" />
     <ClInclude Include="include\camera\Camera.h" />
     <ClInclude Include="include\camera\OpenGLCamera.h" />
     <ClInclude Include="include\core\Color.h" />
     <ClInclude Include="include\shader\OpenGLShader.h" />
     <ClInclude Include="include\shapes\Box.h" />
-    <ClInclude Include="include\texture\TextureLoader.h" />
+    <ClInclude Include="include\texture\OpenGLTexture.h" />
     <ClInclude Include="include\window\GLFWindow.h" />
     <ClInclude Include="include\window\Window.h" />
   </ItemGroup>
@@ -611,18 +613,23 @@
     <ClCompile Include="externals\includes\glm\detail\glm.cpp" />
     <ClCompile Include="externals\includes\glm\glm.cppm" />
     <ClCompile Include="externals\libs\stb_image.cpp" />
+    <ClCompile Include="src\buffers\VertexArray.cpp" />
+    <ClCompile Include="src\buffers\VertexBuffer.cpp" />
     <ClCompile Include="src\camera\OpenGLCamera.cpp" />
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\shader\OpenGLShader.cpp" />
     <ClCompile Include="src\shapes\Box.cpp" />
+    <ClCompile Include="src\texture\TextureLoader.cpp" />
     <ClCompile Include="src\window\GLFWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="externals\libs\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="textures\container.jpg" />
+    <Image Include="textures\container2.png" />
     <Image Include="textures\knight.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
