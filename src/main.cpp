@@ -42,8 +42,8 @@ int main() {
 
 	Box lightBox(-0.2f, -1.0f, -0.3f, 1.0f, 1.0f, 1.0f, Color::White);
 
-    OpenGLTexture openGLTexture("textures/container2.png");
 	OpenGLTexture diffuseMap("textures/container2.png");
+	OpenGLTexture specularMap("textures/container2_specular.png");
 
     VertexBuffer VBO;
     VBO.bind();
@@ -84,7 +84,7 @@ int main() {
 	{
 		window->processInput();
 
-		window->setBackgroundColor(Color::Black);
+		window->setBackgroundColor(Color::Gray);
         glClear(GL_DEPTH_BUFFER_BIT);
 
         shader.use();
@@ -94,13 +94,19 @@ int main() {
         //shader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
         //shader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
         shader.setInt("material.diffuse", 0);
-        shader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        shader.setInt("material.specular", 1);
         shader.setFloat("material.shininess", 64.0f);
+
+        shader.setVec3("light.position", lightBox.getPosition());
 
         shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
         shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-        shader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
+
+		// Distance 50 attenuation
+		shader.setFloat("light.constant", 1.0f);
+		shader.setFloat("light.linear", 0.09f);
+		shader.setFloat("light.quadratic", 0.032f);
 
         // View
         glm::mat4 view = camera->getViewMatrix();
@@ -114,7 +120,11 @@ int main() {
         //glm::mat4 model = glm::mat4(1.0f);
         //shader.setMat4("model", model);
         glActiveTexture(GL_TEXTURE0);
-        openGLTexture.bind();
+        diffuseMap.bind();
+
+        glActiveTexture(GL_TEXTURE1);
+		specularMap.bind();
+
         VAO.bind();
 
         for (unsigned int i = 0; i < 10; i++)
