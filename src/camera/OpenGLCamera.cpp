@@ -135,3 +135,8 @@ glm::vec3 OpenGLCamera::getPosition() const
 {
 	return Position;
 }
+
+glm::vec3 OpenGLCamera::getFront() const
+{
+	return Front;
+}

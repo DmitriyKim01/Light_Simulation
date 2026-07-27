@@ -97,7 +97,9 @@ int main() {
         shader.setInt("material.specular", 1);
         shader.setFloat("material.shininess", 64.0f);
 
-        shader.setVec3("light.position", lightBox.getPosition());
+        shader.setVec3("light.position", camera->getPosition());
+        shader.setVec3("light.direction", camera->getFront());
+        shader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
 
         shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
         shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit

@@ -52,6 +52,7 @@ public:
     void processMouseScroll(float yoffset) override;
     float getZoom() const override;
 	glm::vec3 getPosition() const override;
+	glm::vec3 getFront() const override;
 
 private:
     // calculates the front vector from the Camera's (updated) Euler Angles

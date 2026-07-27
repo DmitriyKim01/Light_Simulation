@@ -20,4 +20,5 @@ public:
 	virtual void processMouseScroll(float yoffset) = 0;
 	virtual float getZoom() const = 0;
 	virtual glm::vec3 getPosition() const = 0;
+	virtual glm::vec3 getFront() const = 0;
 };
