@@ -165,6 +165,21 @@ void GLFWindow::setBackgroundColor(const Color& color)
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void GLFWindow::enableDepthBuffer()
+{
+	glEnable(GL_DEPTH_BUFFER_BIT);
+}
+
+void GLFWindow::disableDepthBuffer()
+{
+	glDisable(GL_DEPTH_BUFFER_BIT);
+}
+
+void GLFWindow::clearDepthBuffer()
+{
+	glClear(GL_DEPTH_BUFFER_BIT);
+}
+
 void GLFWindow::setCamera(Camera& camera)
 {
 	m_camera = &camera;

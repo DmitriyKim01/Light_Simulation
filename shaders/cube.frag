@@ -26,8 +26,8 @@ in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoord;
 
-uniform Material material;
 uniform vec3 viewPos;
+uniform Material material;
 uniform Light light;
 
 void main()

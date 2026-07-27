@@ -64,6 +64,9 @@ public:
 	void unlockCursor() override;
 
 	void setBackgroundColor(const Color& color) override;
+	void enableDepthBuffer() override;
+	void disableDepthBuffer() override;
+	void clearDepthBuffer() override;
 
 	int getWidth()	const override;
 	int getHeight() const override;

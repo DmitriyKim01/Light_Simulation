@@ -298,8 +298,8 @@
     <None Include="LICENSE" />
     <None Include="Light_Simulation.slnx" />
     <None Include="README.md" />
-    <None Include="shaders\base.frag" />
-    <None Include="shaders\base.vert" />
+    <None Include="shaders\cube.frag" />
+    <None Include="shaders\cube.vert" />
     <None Include="shaders\light.vert" />
     <None Include="shaders\light.frag" />
   </ItemGroup>
