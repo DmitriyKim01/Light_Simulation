@@ -21,6 +21,9 @@ public:
 	virtual void unlockCursor() = 0;
 	
 	virtual void setBackgroundColor(const Color& color) = 0;
+	virtual void enableDepthBuffer() = 0;
+	virtual void disableDepthBuffer() = 0;
+	virtual void clearDepthBuffer() = 0;
 
 	virtual void setCamera(Camera& camera) = 0;
 };

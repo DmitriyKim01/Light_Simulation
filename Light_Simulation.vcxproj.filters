@@ -439,8 +439,8 @@
     <None Include="externals\includes\glm\gtx\wrap.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="shaders\base.frag" />
-    <None Include="shaders\base.vert" />
+    <None Include="shaders\cube.frag" />
+    <None Include="shaders\cube.vert" />
     <None Include="externals\libs\glfw3.pdb" />
     <None Include="shaders\light.frag" />
     <None Include="shaders\light.vert" />
@@ -1404,9 +1404,6 @@
     <Library Include="externals\libs\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="textures\knight.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="textures\container.jpg">
       <Filter>Resource Files</Filter>
     </Image>

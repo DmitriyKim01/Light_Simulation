@@ -298,8 +298,8 @@
     <None Include="LICENSE" />
     <None Include="Light_Simulation.slnx" />
     <None Include="README.md" />
-    <None Include="shaders\base.frag" />
-    <None Include="shaders\base.vert" />
+    <None Include="shaders\cube.frag" />
+    <None Include="shaders\cube.vert" />
     <None Include="shaders\light.vert" />
     <None Include="shaders\light.frag" />
   </ItemGroup>
@@ -631,7 +631,6 @@
     <Image Include="textures\container.jpg" />
     <Image Include="textures\container2.png" />
     <Image Include="textures\container2_specular.png" />
-    <Image Include="textures\knight.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

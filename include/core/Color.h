@@ -40,4 +40,5 @@ public:
 	static const Color Cyan;
 	static const Color Magenta;
 	static const Color Transparent;
+	static const Color Gray;
 };
