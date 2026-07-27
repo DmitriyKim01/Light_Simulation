@@ -33,7 +33,7 @@ int main() {
     window->setCamera(*camera);
 	window->lockCursor();
 
-	OpenGLShader shader("shaders/cube.vert", "shaders/cube.frag");
+	OpenGLShader boxShader("shaders/cube.vert", "shaders/cube.frag");
 	OpenGLShader lightShader("shaders/light.vert", "shaders/light.frag");
 
 	Box box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, Color::White);
@@ -85,37 +85,38 @@ int main() {
 		window->setBackgroundColor(Color::Gray);
 		window->clearDepthBuffer();
 
-        shader.use();
+        boxShader.use();
 
-        shader.setVec3("viewPos", camera->getPosition());
+        boxShader.setVec3("viewPos", camera->getPosition());
 
 
 
 		// Set material properties
-        shader.setInt("material.diffuse", 0);
-        shader.setInt("material.specular", 1);
-        shader.setFloat("material.shininess", 64.0f);
+        boxShader.setInt("material.diffuse", 0);
+        boxShader.setInt("material.specular", 1);
+        boxShader.setFloat("material.shininess", 64.0f);
 
 		// Set light properties
-        shader.setVec3("light.position", camera->getPosition());
-        shader.setVec3("light.direction", camera->getFront());
-        shader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+        boxShader.setVec3("light.position", camera->getPosition());
+        boxShader.setVec3("light.direction", camera->getFront());
+        boxShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+        boxShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
 
-        shader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-        shader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-        shader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        boxShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+        boxShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+        boxShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-		shader.setFloat("light.constant", 1.0f);
-		shader.setFloat("light.linear", 0.09f);
-		shader.setFloat("light.quadratic", 0.032f);
+        boxShader.setFloat("light.constant", 1.0f);
+        boxShader.setFloat("light.linear", 0.09f);
+        boxShader.setFloat("light.quadratic", 0.032f);
 
         // View
         glm::mat4 view = camera->getViewMatrix();
-        shader.setMat4("view", view);
+        boxShader.setMat4("view", view);
 
 		// Projection
         glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        shader.setMat4("projection", projection);
+        boxShader.setMat4("projection", projection);
 
         // Set textures
         glActiveTexture(GL_TEXTURE0);
@@ -124,13 +125,13 @@ int main() {
         specularMap.bind();
 
         VAO.bind();
-        for (unsigned int i = 0; i < 10; i++)
+        for (unsigned int i = 0; i < 9; i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             //float angle = 20.0f * i;
             //model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            shader.setMat4("model", model);
+            boxShader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
