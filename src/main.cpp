@@ -114,20 +114,6 @@ int main() {
         boxShader.setInt("material.specular", 1);
         boxShader.setFloat("material.shininess", 64.0f);
 
-        // Set light properties
-        //boxShader.setVec3("light.position", camera->getPosition());
-        //boxShader.setVec3("light.direction", camera->getFront());
-        //boxShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-        //boxShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
-
-        //boxShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-        //boxShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-        //boxShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-
-        //boxShader.setFloat("light.constant", 1.0f);
-        //boxShader.setFloat("light.linear", 0.09f);
-        //boxShader.setFloat("light.quadratic", 0.032f);
-
         // directional light
 		boxShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
         boxShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
