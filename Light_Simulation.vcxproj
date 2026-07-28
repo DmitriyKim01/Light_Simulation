@@ -603,6 +603,7 @@
     <ClInclude Include="include\camera\Camera.h" />
     <ClInclude Include="include\camera\OpenGLCamera.h" />
     <ClInclude Include="include\core\Color.h" />
+    <ClInclude Include="include\models\Mesh.h" />
     <ClInclude Include="include\shader\OpenGLShader.h" />
     <ClInclude Include="include\shapes\Box.h" />
     <ClInclude Include="include\texture\OpenGLTexture.h" />
@@ -619,6 +620,7 @@
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\models\Mesh.cpp" />
     <ClCompile Include="src\shader\OpenGLShader.cpp" />
     <ClCompile Include="src\shapes\Box.cpp" />
     <ClCompile Include="src\texture\TextureLoader.cpp" />
