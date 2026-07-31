@@ -444,6 +444,8 @@
     <None Include="externals\libs\glfw3.pdb" />
     <None Include="shaders\light.frag" />
     <None Include="shaders\light.vert" />
+    <None Include="models\backpack\backpack.mtl" />
+    <None Include="models\backpack\backpack.obj" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="externals\includes\glad\glad.h">
@@ -1361,6 +1363,9 @@
     <ClInclude Include="include\models\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\models\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="externals\includes\glm\detail\glm.cpp">
@@ -1405,6 +1410,9 @@
     <ClCompile Include="src\models\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\models\Model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="externals\libs\glfw3.lib" />
@@ -1419,5 +1427,23 @@
     <Image Include="textures\container2_specular.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="models\backpack\ao.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="models\backpack\diffuse.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="models\backpack\normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="models\backpack\roughness.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="models\backpack\specular.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="models\backpack\source_attribution.txt" />
   </ItemGroup>
 </Project>

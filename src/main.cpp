@@ -7,6 +7,7 @@
 #include <buffers/VertexBuffer.h>
 #include <buffers/VertexArray.h>
 #include <texture/OpenGLTexture.h>
+#include <models/Model.h>
 
 #include <shader/OpenGLShader.h>
 
@@ -22,6 +23,7 @@
 
 #include <stb/stb_image.h>
 #include <iostream>
+#include <fstream>
 
 const int SCR_WIDTH = 1920;
 const int SCR_HEIGHT = 1080;
@@ -102,6 +104,9 @@ int main() {
     glm::vec3(-4.0f,  2.0f, -12.0f),
     glm::vec3(0.0f,  0.0f, -3.0f)
     };
+
+	std::string modelPath = "models/backpack/backpack.obj";
+    Model ourModel(modelPath.c_str());
 
     while (!window->shouldClose())
     {
@@ -215,6 +220,7 @@ int main() {
         }
         //glDrawArrays(GL_TRIANGLES, 0, lightBox.getVertexCount());
 
+		ourModel.Draw(boxShader);
 		window->update();
 	}
 
