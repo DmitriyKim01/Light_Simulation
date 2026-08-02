@@ -303,7 +303,6 @@
     <None Include="externals\libs\glfw3.pdb" />
     <None Include="LICENSE" />
     <None Include="Light_Simulation.slnx" />
-    <None Include="models\backpack\backpack.mtl" />
     <None Include="README.md" />
     <None Include="shaders\cube.frag" />
     <None Include="shaders\cube.vert" />
@@ -605,13 +604,12 @@
     <ClInclude Include="externals\includes\glm\vec4.hpp" />
     <ClInclude Include="externals\includes\glm\vector_relational.hpp" />
     <ClInclude Include="externals\includes\KHR\khrplatform.h" />
+    <ClInclude Include="include\buffers\ElementBuffer.h" />
     <ClInclude Include="include\buffers\VertexArray.h" />
     <ClInclude Include="include\buffers\VertexBuffer.h" />
     <ClInclude Include="include\camera\Camera.h" />
     <ClInclude Include="include\camera\OpenGLCamera.h" />
     <ClInclude Include="include\core\Color.h" />
-    <ClInclude Include="include\models\Mesh.h" />
-    <ClInclude Include="include\models\Model.h" />
     <ClInclude Include="include\shader\OpenGLShader.h" />
     <ClInclude Include="include\shapes\Box.h" />
     <ClInclude Include="include\texture\OpenGLTexture.h" />
@@ -622,14 +620,13 @@
     <ClCompile Include="externals\includes\glm\detail\glm.cpp" />
     <ClCompile Include="externals\includes\glm\glm.cppm" />
     <ClCompile Include="externals\libs\stb_image.cpp" />
+    <ClCompile Include="src\buffers\ElementBuffer.cpp" />
     <ClCompile Include="src\buffers\VertexArray.cpp" />
     <ClCompile Include="src\buffers\VertexBuffer.cpp" />
     <ClCompile Include="src\camera\OpenGLCamera.cpp" />
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\models\Mesh.cpp" />
-    <ClCompile Include="src\models\Model.cpp" />
     <ClCompile Include="src\shader\OpenGLShader.cpp" />
     <ClCompile Include="src\shapes\Box.cpp" />
     <ClCompile Include="src\texture\TextureLoader.cpp" />
@@ -639,24 +636,9 @@
     <Library Include="externals\libs\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="models\backpack\ao.jpg" />
-    <Image Include="models\backpack\diffuse.jpg" />
-    <Image Include="models\backpack\normal.png" />
-    <Image Include="models\backpack\roughness.jpg" />
-    <Image Include="models\backpack\specular.jpg" />
     <Image Include="textures\container.jpg" />
     <Image Include="textures\container2.png" />
     <Image Include="textures\container2_specular.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="models\backpack\backpack.obj">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="models\backpack\source_attribution.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

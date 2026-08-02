@@ -7,7 +7,7 @@
 #include <buffers/VertexBuffer.h>
 #include <buffers/VertexArray.h>
 #include <texture/OpenGLTexture.h>
-#include <models/Model.h>
+#include <buffers/ElementBuffer.h>
 
 #include <shader/OpenGLShader.h>
 
@@ -25,9 +25,6 @@
 #include <iostream>
 #include <fstream>
 
-const int SCR_WIDTH = 1920;
-const int SCR_HEIGHT = 1080;
-
 int main() {
 
 	Camera* camera = new OpenGLCamera(
@@ -35,21 +32,20 @@ int main() {
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 
-	Window* window = new GLFWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Window");
+	Window* window = new GLFWindow();
     window->setCamera(*camera);
 	window->lockCursor();
 
 	OpenGLShader boxShader("shaders/cube.vert", "shaders/cube.frag");
 	OpenGLShader lightShader("shaders/light.vert", "shaders/light.frag");
 
+    OpenGLTexture diffuseMap("textures/container2.png");
+    OpenGLTexture specularMap("textures/container2_specular.png");
+
 	Box box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, Color::White);
     box.includeTextureCoordinates();
     box.includeNormal();
-
 	Box lightBox(-0.2f, -1.0f, -0.3f, 1.0f, 1.0f, 1.0f, Color::White);
-
-	OpenGLTexture diffuseMap("textures/container2.png");
-	OpenGLTexture specularMap("textures/container2_specular.png");
 
     VertexBuffer VBO;
     VBO.bind();
@@ -62,6 +58,10 @@ int main() {
     VBO.unbind();
     VAO.unbind();
 
+    ElementBuffer EBO;
+    EBO.bind();
+	EBO.setLayout(box);
+
     VertexBuffer lightVBO;
     lightVBO.bind();
     lightVBO.setData(lightBox.getVertices());
@@ -72,18 +72,6 @@ int main() {
 
     lightVBO.unbind();
     lightVAO.unbind();
-
-    //glm::vec3 cubePositions[] = {
-    //glm::vec3(0.0f,  0.0f,  0.0f),
-    //glm::vec3(1.0f,  0.0f, 0.0f),
-    //glm::vec3(-1.0f, 0.0f, 0.0f),
-    //glm::vec3(0.0f, 1.0f, 0.0f),
-    //glm::vec3(1.0f, 1.0f, 0.0f),
-    //glm::vec3(-1.0f, 1.0f, 0.0f),
-    //glm::vec3(0.0f, -1.0f, 0.0f),
-    //glm::vec3(1.0f, -1.0f, 0.0f),
-    //glm::vec3(-1.0f, -1.0f, 0.0f)
-    //};
 
     glm::vec3 cubePositions[] = {
     glm::vec3(0.0f,  0.0f,  0.0f),
@@ -104,9 +92,6 @@ int main() {
     glm::vec3(-4.0f,  2.0f, -12.0f),
     glm::vec3(0.0f,  0.0f, -3.0f)
     };
-
-	std::string modelPath = "models/backpack/backpack.obj";
-    Model ourModel(modelPath.c_str());
 
     while (!window->shouldClose())
     {
@@ -178,7 +163,7 @@ int main() {
         boxShader.setMat4("view", view);
 
         // Projection
-        glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), (float)window->getWidth() / (float)window->getHeight(), 0.1f, 100.0f);
         boxShader.setMat4("projection", projection);
 
         // Set textures
@@ -188,6 +173,7 @@ int main() {
         specularMap.bind();
 
         VAO.bind();
+        EBO.bind();
         for (unsigned int i = 0; i < 9; i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
@@ -195,7 +181,7 @@ int main() {
             //float angle = 20.0f * i;
             //model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
             boxShader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+			glDrawElements(GL_TRIANGLES, box.getIndexCount(), GL_UNSIGNED_INT, 0);
         }
 
         lightShader.use();
@@ -210,17 +196,16 @@ int main() {
         lightShader.setMat4("model", model);
 
         lightVAO.bind();
+        EBO.bind();
         for (unsigned int i = 0; i < 4; i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, pointLightPositions[i]);
 			model = glm::scale(model, glm::vec3(0.2f));
             lightShader.setMat4("model", model);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glDrawElements(GL_TRIANGLES, lightBox.getIndexCount(), GL_UNSIGNED_INT, 0);
         }
-        //glDrawArrays(GL_TRIANGLES, 0, lightBox.getVertexCount());
 
-		ourModel.Draw(boxShader);
 		window->update();
 	}
 

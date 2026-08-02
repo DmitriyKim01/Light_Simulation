@@ -69,15 +69,22 @@ void Box::addFace(
 	glm::vec2 uv2(1.0f, 1.0f);
 	glm::vec2 uv3(0.0f, 1.0f);
 
-	// Triangle 1
+	const unsigned int baseIndex = static_cast<unsigned int>(m_vertices.size() / m_strideFloats);
+
 	addVertex(v0, uv0, normal);
 	addVertex(v1, uv1, normal);
 	addVertex(v2, uv2, normal);
-
-	// Triangle 2
-	addVertex(v2, uv2, normal);
 	addVertex(v3, uv3, normal);
-	addVertex(v0, uv0, normal);
+
+	// Triangle 1: v0, v1, v2
+	m_indices.push_back(baseIndex + 0);
+	m_indices.push_back(baseIndex + 1);
+	m_indices.push_back(baseIndex + 2);
+
+	// Triangle 2: v2, v3, v0
+	m_indices.push_back(baseIndex + 2);
+	m_indices.push_back(baseIndex + 3);
+	m_indices.push_back(baseIndex + 0);
 }
 
 void Box::buildVertices()
@@ -85,7 +92,10 @@ void Box::buildVertices()
 	calculateStride();
 
 	m_vertices.clear();
-	m_vertices.reserve(36 * m_strideFloats);
+	m_indices.clear();
+
+	m_vertices.reserve(24 * m_strideFloats);
+	m_indices.reserve(36);
 
 	float halfWidth = m_width / 2.0f;
 	float halfHeight = m_height / 2.0f;
@@ -351,4 +361,14 @@ std::size_t Box::getNormalOffsetBytes() const
 	}
 
 	return offset * sizeof(float);
+}
+
+const std::vector<unsigned int>& Box::getIndices() const
+{
+	return m_indices;
+}
+
+int Box::getIndexCount() const
+{
+	return static_cast<int>(m_indices.size());
 }

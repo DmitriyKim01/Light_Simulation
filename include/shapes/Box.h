@@ -24,6 +24,7 @@ private:
 	std::size_t m_strideFloats;
 
 	std::vector<float> m_vertices;
+	std::vector<unsigned int> m_indices;
 private:
 	void calculateStride();
 
@@ -85,5 +86,8 @@ public:
 	std::size_t getColorOffsetBytes() const;
 	std::size_t getTextureCoordinatesOffsetBytes() const;
 	std::size_t getNormalOffsetBytes() const;
+
+	const std::vector<unsigned int>& getIndices() const;
+	int getIndexCount() const;
 
 };
